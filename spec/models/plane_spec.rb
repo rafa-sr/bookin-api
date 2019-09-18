@@ -7,7 +7,7 @@ RSpec.describe Plane, type: :model do
   context 'valid' do
     #share state across explames
     #----------------------------------------------------------------------
-    describe "when empty plane should fit windows first" do
+    describe "when empty plane" do
       before(:all) do
         @plane = Plane.new
       end
@@ -28,20 +28,23 @@ RSpec.describe Plane, type: :model do
         end
       end
 
-      describe "no windows sits" do
+      describe "and no windows sits" do
 
         it 'get-tow-sits should get B and C sits' do
-
           (0..25).each do |index|
             index_aux = index+1
             expect(@plane.get_tow_sits).to eq(['B' + "#{index_aux}",'C' + "#{index_aux}"])
           end
+        end
 
+        it 'and left side is full, get-tow-sit should get D and E sits ' do
+          (0..25).each do |index|
+            index_aux = index+1
+            expect(@plane.get_tow_sits).to eq(['D'+ "#{index_aux}", 'E' + "#{index_aux}"])
+          end
         end
 
       end
-
-
     end
     #----------------------------------------------------------------------
 
