@@ -145,7 +145,9 @@ class Plane < ApplicationRecord
   def get_tow_sits
     if left_get_tow_sits.nil?
       if right_get_tow_sits.nil?
+        if tow_sits_no_windows.nil?
 
+        end
       end
 
     end
@@ -153,6 +155,7 @@ class Plane < ApplicationRecord
   end
 
   #----------------------------------------------------------------------
+
   def left_get_tow_sits
 
     @tow_sit = Array.new
@@ -163,6 +166,7 @@ class Plane < ApplicationRecord
           @tow_sit << @array_row_left[1][row]
           @array_row_left[0][row] = 0
           @array_row_left[1][row] = 0
+          #TODO
           puts @tow_sit.inspect
           return @tow_sit
       end
@@ -183,7 +187,8 @@ class Plane < ApplicationRecord
         @tow_sit << @array_row_right[2][row]
         @array_row_right[1][row] = 0
         @array_row_right[2][row] = 0
-        puts @tow_sit.inspect
+        #TODO
+        #puts @tow_sit.inspect
         return @tow_sit
       end
 
@@ -194,9 +199,31 @@ class Plane < ApplicationRecord
 
   #----------------------------------------------------------------------
 
+  def tow_sits_no_windows
+
+    @tow_sit = Array.new
+    (0..25).each do |col|
+      if (@array_row_left[1][col] != 0) and (@array_row_right[2][col])
+        @tow_sit << @array_row_left[1][col]
+        @tow_sit << @array_row_left[2][col]
+        @array_row_left[1][col] = 0
+        @array_row_left[2][col] = 0
+        return @array_row_left
+      end
+
+    end
+    @tow_sit = nil
+
+  end
+
+  #----------------------------------------------------------------------
+
+
   def random_sit_left
     #todo
   end
+
+  #----------------------------------------------------------------------
 
 
   def random_sit_right
