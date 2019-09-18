@@ -88,10 +88,9 @@ class Plane < ApplicationRecord
         @single_sit  = @array_row_left[0][col]
         @array_row_left[0][col] = 0
         return @single_sit
-      elsif col == 25
-        return nil
       end
     end
+    @tow_sit = nil
   end
 
   #----------------------------------------------------------------------
@@ -103,10 +102,9 @@ class Plane < ApplicationRecord
         @single_sit = @array_row_right[2][col]
         @array_row_right[2][col] = 0
         return @single_sit
-      elsif col == 25
-        return nil
       end
     end
+    @tow_sit = nil
   end
 
   #----------------------------------------------------------------------
