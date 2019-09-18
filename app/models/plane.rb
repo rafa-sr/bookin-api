@@ -3,7 +3,8 @@ class Plane < ApplicationRecord
   attr_accessor :array_row_left,  :array_row_right
 
   def initialize (attributes = {})
-    #col x row
+    #row x col
+    #TODO single array for all sits
     @array_row_left = Array.new(3) { Array.new(26) }
     @array_row_right = Array.new(3) { Array.new(26) }
     @single_sit = nil
@@ -11,6 +12,10 @@ class Plane < ApplicationRecord
     fill_arrays
   end
 
+  #@todo
+  def cancel_sit
+    #TODO
+  end
   #----------------------------------------------------------------------
 
   def fill_arrays
@@ -145,7 +150,9 @@ class Plane < ApplicationRecord
       if right_get_tow_sits.nil?
         if left_tow_sits_no_windows.nil?
           if right_tow_sits_no_windows.nil?
-
+            if across_aisle_tow_sits.nil?
+              #should call random single sit twice
+            end
           end
         end
       end
@@ -158,13 +165,13 @@ class Plane < ApplicationRecord
   def left_get_tow_sits
 
     @tow_sit = Array.new
-    (0..25).each do |row|
+    (0..25).each do |col|
 
-      if (@array_row_left[0][row] != 0) and (@array_row_left[1][row] != 0)
-          @tow_sit << @array_row_left[0][row]
-          @tow_sit << @array_row_left[1][row]
-          @array_row_left[0][row] = 0
-          @array_row_left[1][row] = 0
+      if (@array_row_left[0][col] != 0) and (@array_row_left[1][col] != 0)
+          @tow_sit << @array_row_left[0][col]
+          @tow_sit << @array_row_left[1][col]
+          @array_row_left[0][col] = 0
+          @array_row_left[1][col] = 0
           #TODO
           puts @tow_sit.inspect
           return @tow_sit
@@ -179,13 +186,13 @@ class Plane < ApplicationRecord
   def right_get_tow_sits
 
     @tow_sit = Array.new
-    (0..25).each do |row|
+    (0..25).each do |col|
 
-      if (@array_row_right[1][row] != 0) and (@array_row_right[2][row] != 0)
-        @tow_sit << @array_row_right[1][row]
-        @tow_sit << @array_row_right[2][row]
-        @array_row_right[1][row] = 0
-        @array_row_right[2][row] = 0
+      if (@array_row_right[1][col] != 0) and (@array_row_right[2][col] != 0)
+        @tow_sit << @array_row_right[1][col]
+        @tow_sit << @array_row_right[2][col]
+        @array_row_right[1][col] = 0
+        @array_row_right[2][col] = 0
         #TODO
         #puts @tow_sit.inspect
         return @tow_sit
@@ -228,6 +235,22 @@ class Plane < ApplicationRecord
         return @tow_sit
       end
 
+    end
+    @tow_sit = nil
+  end
+
+  #----------------------------------------------------------------------
+
+  def across_aisle_tow_sits
+    @tow_sit = Array.new
+    (0..25).each do |col|
+      if (@array_row_left[2][col] != 0) and (@array_row_right[0][col] != 0)
+        @tow_sit << @array_row_left[2][col]
+        @tow_sit << @array_row_right[0][col]
+        @array_row_right[0][col] = 0
+        @array_row_left[2][col] = 0
+        return @tow_sit
+      end
     end
     @tow_sit = nil
   end
