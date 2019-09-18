@@ -1,11 +1,13 @@
 class Plane < ApplicationRecord
 
-  attr_accessor :array_row_left, :array_row_right
+  attr_accessor :array_row_left,  :array_row_right
 
   def initialize (attributes = {})
+    #col x row
     @array_row_left = Array.new(3) { Array.new(26) }
     @array_row_right = Array.new(3) { Array.new(26) }
     @single_sit = nil
+    @tow_sit = nil
     fill_arrays
   end
 
@@ -140,20 +142,66 @@ class Plane < ApplicationRecord
 
   #----------------------------------------------------------------------
 
-  def random_sit_left
+  def get_tow_sits
+    if left_get_tow_sits.nil?
+      if right_get_tow_sits.nil?
 
+      end
+
+    end
+    @tow_sit
+  end
+
+  #----------------------------------------------------------------------
+  def left_get_tow_sits
+
+    @tow_sit = Array.new
+    (0..25).each do |row|
+
+      if (@array_row_left[0][row] != 0) and (@array_row_left[1][row] != 0)
+          @tow_sit << @array_row_left[0][row]
+          @tow_sit << @array_row_left[1][row]
+          @array_row_left[0][row] = 0
+          @array_row_left[1][row] = 0
+          puts @tow_sit.inspect
+          return @tow_sit
+      end
+
+    end
+    @tow_sit = nil
 
   end
 
+  #----------------------------------------------------------------------
+  def right_get_tow_sits
 
-  def random_sit_right
+    @tow_sit = Array.new
+    (0..25).each do |row|
 
+      if (@array_row_right[1][row] != 0) and (@array_row_right[2][row] != 0)
+        @tow_sit << @array_row_right[1][row]
+        @tow_sit << @array_row_right[2][row]
+        @array_row_right[1][row] = 0
+        @array_row_right[2][row] = 0
+        puts @tow_sit.inspect
+        return @tow_sit
+      end
+
+    end
+    @tow_sit = nil
 
   end
 
   #----------------------------------------------------------------------
 
+  def random_sit_left
+    #todo
+  end
 
+
+  def random_sit_right
+     #todo
+  end
 
   #----------------------------------------------------------------------
 

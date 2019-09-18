@@ -32,11 +32,27 @@ RSpec.describe Plane, type: :model do
 
     describe 'when empty plane and 2 sits' do
 
+      before(:all) do
+        @plane = Plane.new
+      end
+
+      it 'first 26 tow-sits must be A and B' do
+        (0..25).each do |index|
+          index_aux=index+1
+          expect(@plane.get_tow_sits).to eq(['A' + "#{index_aux}",'B' + "#{index_aux}" ])
+        end
+      end
+
+      it 'first 26 tow-sits must be A and B' do
+        (0..25).each do |index|
+          index_aux=index+1
+          expect(@plane.get_tow_sits).to eq(['E' + "#{index_aux}",'F' + "#{index_aux}" ])
+        end
+      end
+
     end
 
   end
-
-
 
 
 end
