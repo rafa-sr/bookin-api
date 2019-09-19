@@ -77,6 +77,61 @@ RSpec.describe Plane, type: :model do
 
     end
 
+    describe 'and try get-three-sits' do
+      before(:all) do
+        @plane = Plane.new
+      end
+
+      it 'should get A,B,C' do
+        (0..25).each do |index|
+          index_aux = index +1
+          expect(@plane.get_three_sits).to eq(['A' + "#{index_aux}", 'B' + "#{index_aux}",#
+                                               'C' + "#{index_aux}"])
+        end
+      end
+
+      it 'should get D,E,C' do
+        (0..25).each do |index|
+          index_aux = index +1
+          expect(@plane.get_three_sits).to eq(['D' + "#{index_aux}", 'E' + "#{index_aux}",#
+                                               'F' + "#{index_aux}"])
+        end
+      end
+
+    end
+
+    describe 'expected values' do
+      before {@plane = Plane.new}
+
+      it "expected values" do
+        expected_values =  ["A1",['A2','B2'],['A3','B3','C3'],['A4','B4','C4'],['A5','B5']]
+        expect(@plane.get_one_sit).to eq(expected_values[0])
+        expect(@plane.get_tow_sits).to eq(expected_values[1])
+        expect(@plane.get_three_sits).to eq(expected_values[2])
+        expect(@plane.get_three_sits).to eq(expected_values[3])
+        
+      end
+    end
+
+    describe 'four-sits' do
+      before {@plane = Plane.new}
+
+      it "should put them balanced across row" do
+        @plane.get_one_sit
+        (0..25).each do
+          sits_expected = Array.new
+          sits_row2 = Array.new
+          sits = @plane.get_four_sits
+          sits_expected << sits[0].first + (sits[0][1,2].to_i + 1).to_s
+          sits_expected << sits[1].first + (sits[1][1,2].to_i + 1).to_s
+          sits_row2 << sits.at(2) << sits.at(3)
+          puts "row2" + sits_row2.inspect
+          puts "expect" + sits_expected.inspect
+          expect(sits_row2).to eq(sits_expected)
+        end
+      end
+    end
+
   end
 
 end
