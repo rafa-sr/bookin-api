@@ -8,6 +8,8 @@ class Plane < ApplicationRecord
     #TODO en la clase bookin llamar a los metodos primitivos para encapsular la seleccion de asientos alli
     @array_row_left = Array.new(3) { Array.new(26) }
     @array_row_right = Array.new(3) { Array.new(26) }
+    @all_sits = Array.new
+    @all_sits =  @array_row_left + @array_row_right
     @single_sit = nil
     @tow_sits = nil
     @three_sits = nil
@@ -29,15 +31,48 @@ class Plane < ApplicationRecord
   #----------------------------------------------------------------------
 
   def get_one_sit
-    if left_windows_sits.nil?
-      if right_windows_sits.nil?
+    if window_get_one_sit.nil?
         if random_sit.nil?
-          #there is no sits available
           return nil
         end
-      end
     end
     @single_sit
+  end
+
+  #----------------------------------------------------------------------
+
+  def window_get_one_sit
+    (0..25).each do |col|
+      if (@all_sits[0][col] != 0)
+        @single_sit = @all_sits[0][col]
+        @all_sits[0][col] = 0
+        return @single_sit
+      elsif (@all_sits[5][col] != 0)
+        @single_sit = @all_sits[5][col]
+        @all_sits[5][col] = 0
+        return @single_sit
+      end
+    end
+    @single_sit = nil
+  end
+
+  #----------------------------------------------------------------------
+
+  def random_sit
+
+    (1..4).each do |row|
+      (0..25).each do |col|
+        if (@all_sits[row][col] != 0)
+          @single_sit = @all_sits[row][col]
+          @all_sits[row][col] = 0
+        elsif (@all_sits[row][col] != 0)
+          @single_sit = @all_sits[row][col]
+          @all_sits[row][col] = 0
+        end
+        return @single_sit
+      end
+    end
+    @single_sit = nil
   end
 
   #----------------------------------------------------------------------
@@ -88,6 +123,15 @@ class Plane < ApplicationRecord
   end
 
   #----------------------------------------------------------------------
+  def print_full_plane
+    (0..5).each do |row|
+      (0..26).each do |col|
+        puts @all_sits[row][col]
+      end
+    end
+  end
+
+  #----------------------------------------------------------------------
 
   def left_windows_sits
 
@@ -98,7 +142,7 @@ class Plane < ApplicationRecord
         return @single_sit
       end
     end
-    @tow_sits = nil
+    @single_sit = nil
   end
 
   #----------------------------------------------------------------------
@@ -112,38 +156,7 @@ class Plane < ApplicationRecord
         return @single_sit
       end
     end
-    @tow_sits = nil
-  end
-
-  #----------------------------------------------------------------------
-
-  def random_sit
-
-    (1..2).each do |row|
-      (0..25).each do |col|
-
-        if @array_row_left[row][col] != 0
-          @single_sit = @array_row_left[row][col]
-          @array_row_left[row][col] = 0
-          return @single_sit
-        elsif row == 2 and col == 25
-          break
-        end
-      end
-    end
-
-    (0..1).each do |row|
-      (0..25).each do |col|
-
-        if @array_row_right[row][col] != 0
-          @single_sit = @array_row_right[row][col]
-          @array_row_right[row][col] = 0
-          return @single_sit
-        elsif row == 1 and col == 25
-          return nil
-        end
-      end
-    end
+    @single_sit = nil
   end
 
   #----------------------------------------------------------------------
@@ -287,7 +300,6 @@ class Plane < ApplicationRecord
 
   #----------------------------------------------------------------------
 
-
   def left_get_three_sits
     @three_sits = Array.new
       (0..25).each do |col|
@@ -316,7 +328,6 @@ class Plane < ApplicationRecord
        @four_sits = sits_Aux
        sits_Aux = get_tow_sits
        @four_sits.concat(sits_Aux)
-       puts @four_sits.inspect
        return @four_sits
       end
     end
