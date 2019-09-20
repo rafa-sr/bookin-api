@@ -22,16 +22,10 @@ RSpec.describe Plane, type: :model do
 
       describe "and no windows sits" do
 
-        it 'get-tow-sits should get B and C sits' do
+        it 'get-tow-sits should get B and C sits or D and E' do
           (0..25).each do |index|
             index_aux = index+1
             expect(@plane.get_tow_sits).to eq(['B' + "#{index_aux}",'C' + "#{index_aux}"])
-          end
-        end
-
-        it 'and left side is full, get-tow-sit should get D and E sits ' do
-          (0..25).each do |index|
-            index_aux = index+1
             expect(@plane.get_tow_sits).to eq(['D'+ "#{index_aux}", 'E' + "#{index_aux}"])
           end
         end
@@ -50,12 +44,6 @@ RSpec.describe Plane, type: :model do
         (0..25).each do |index|
           index_aux=index+1
           expect(@plane.get_tow_sits).to eq(['A' + "#{index_aux}",'B' + "#{index_aux}" ])
-        end
-      end
-
-      it 'after no A sits, next 26 tow-sits must be E and F' do
-        (0..25).each do |index|
-          index_aux=index+1
           expect(@plane.get_tow_sits).to eq(['E' + "#{index_aux}",'F' + "#{index_aux}" ])
         end
       end
@@ -79,12 +67,6 @@ RSpec.describe Plane, type: :model do
           index_aux = index +1
           expect(@plane.get_three_sits).to eq(['A' + "#{index_aux}", 'B' + "#{index_aux}",#
                                                'C' + "#{index_aux}"])
-        end
-      end
-
-      it 'should get D,E,C' do
-        (0..25).each do |index|
-          index_aux = index +1
           expect(@plane.get_three_sits).to eq(['D' + "#{index_aux}", 'E' + "#{index_aux}",#
                                                'F' + "#{index_aux}"])
         end
@@ -96,19 +78,19 @@ RSpec.describe Plane, type: :model do
       before {@plane = Plane.new}
 
       it "expected values" do
-        expected_values =  ["A1",['A2','B2'],['A3','B3','C3'],['A4','B4','C4'],['A5','B5']]
+        expected_values =  ["A1",['E1','F1'],['A2','B2','C2'],['A2','B2','C2'],['A3','B3']]
         expect(@plane.get_one_sit).to eq(expected_values[0])
         expect(@plane.get_tow_sits).to eq(expected_values[1])
         expect(@plane.get_three_sits).to eq(expected_values[2])
         expect(@plane.get_three_sits).to eq(expected_values[3])
-        
       end
     end
 
     describe 'four-sits' do
       before {@plane = Plane.new}
 
-      it "should put them balanced across row" do
+      it "should put them balanced across row " do
+        #todo valifa front to left
         @plane.get_one_sit
         (0..25).each do
           sits_expected = Array.new
