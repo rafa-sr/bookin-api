@@ -78,7 +78,7 @@ RSpec.describe Plane, type: :model do
       before {@plane = Plane.new}
 
       it "expected values" do
-        expected_values =  ["A1",['E1','F1'],['A2','B2','C2'],['A2','B2','C2'],['A3','B3']]
+        expected_values =  ["A1",['E1','F1'],['A2','B2','C2'],['D2','E2','F2'],['A3','B3']]
         expect(@plane.get_one_sit).to eq(expected_values[0])
         expect(@plane.get_tow_sits).to eq(expected_values[1])
         expect(@plane.get_three_sits).to eq(expected_values[2])
@@ -91,17 +91,26 @@ RSpec.describe Plane, type: :model do
 
       it "should put them balanced across row " do
         #todo valifa front to left
-        @plane.get_one_sit
-        (0..25).each do
+        #@plane.get_one_sit
+        (1..26).step(2) do |index|
+          puts index
           sits_expected = Array.new
           sits_row2 = Array.new
           sits = @plane.get_four_sits
-          sits_expected << sits[0].first + (sits[0][1,2].to_i + 1).to_s
-          sits_expected << sits[1].first + (sits[1][1,2].to_i + 1).to_s
-          sits_row2 << sits.at(2) << sits.at(3)
+         # sits_expected << sits[0].first + (sits[0][1,2].to_i + 1).to_s
+          #sits_expected << sits[1].first + (sits[1][1,2].to_i + 1).to_s
+          #sits_row2 << sits.at(2) << sits.at(3)
         #  puts "row2" + sits_row2.inspect
         #  puts "expect" + sits_expected.inspect
-          expect(sits_row2).to eq(sits_expected)
+          #expect(sits_row2).to eq(sits_expected)
+          expect(sits).to eq(['A' + "#{index}", 'B' + "#{index}",#
+                                               'A' + "#{index+1}", 'B' + "#{index+1}"])
+          sits = @plane.get_four_sits
+
+          expect(sits).to eq(['E' + "#{index}", 'F' + "#{index}",#
+                                              'E' + "#{index+1}", 'F' + "#{index+1}"])
+          @plane.print_all_sits
+          puts index
         end
       end
     end
